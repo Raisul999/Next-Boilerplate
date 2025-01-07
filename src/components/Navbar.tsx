@@ -8,13 +8,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ThemeToggler from "@/components/ThemeToggler";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
 
 const Navbar = () => {
   return (
@@ -39,12 +32,6 @@ const Navbar = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <SignedOut>
-          <SignInButton />
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
       </div>
     </div>
   );

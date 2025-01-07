@@ -13,6 +13,8 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
+import SignInPage from "./SignInForm";
+import { Import } from "lucide-react";
 
 const AuthTabs = () => {
   return (
@@ -23,7 +25,7 @@ const AuthTabs = () => {
           <TabsTrigger value="register">Register</TabsTrigger>
         </TabsList>
         <TabsContent value="login">
-          <LoginForm />
+          <SignInPage />
         </TabsContent>
         <TabsContent value="register">
           <RegisterForm />

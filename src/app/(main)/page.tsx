@@ -1,15 +1,13 @@
+"use client";
 import DashboardCard from "@/components/DashboardCard";
 import { Folder, MessageCircle, Newspaper, User } from "lucide-react";
 import PostsTable from "@/components/posts/PostsTable";
 import AnalyticsChart from "@/components/dashboard/AnalyticsChart";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { useSession } from "next-auth/react";
 
-export default async function Home() {
-  const authDetails = await auth();
-  const user = await currentUser();
-
-  console.log({ authDetails, user });
-
+export default function Home() {
+  const session = useSession();
+  console.log({ session });
   return (
     <>
       <div className="flex flex-col md:flex-row justify-between gap-5 mb-5">
