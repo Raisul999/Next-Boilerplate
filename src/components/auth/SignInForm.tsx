@@ -29,15 +29,16 @@ export default function SignInPage() {
         email,
         password,
         // redirect: false,
-        // callbackUrl: "/",
+        callbackUrl: "/",
       });
 
       if (result?.ok) {
         console.log("logged");
         // Wait a brief moment before redirecting
         // await new Promise((resolve) => setTimeout(resolve, 100));
-        router.push("/");
+        // router.push("/");
         // router.refresh(); // Force a refresh of the navigation
+        alert("logeed in")
       } else {
         console.error("Sign in failed:", result?.error);
         // Handle error - you might want to show an error message to the user
