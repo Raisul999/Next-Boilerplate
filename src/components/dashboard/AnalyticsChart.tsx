@@ -9,14 +9,13 @@ import {
 } from "recharts";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 
 import { data } from "@/data/analytics";
-import { AnalyticsItem } from "@/types/analytics";
+
 
 const AnalyticsChart = () => {
   return (

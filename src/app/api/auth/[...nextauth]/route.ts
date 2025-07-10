@@ -1,6 +1,5 @@
-import NextAuth, { NextAuthOptions, Session, User } from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { JWT } from "next-auth/jwt";
 
 // Define proper types for our user data
 interface MockUser {
@@ -32,17 +31,8 @@ const mockUsers: MockUser[] = [
   },
 ];
 
-// Extend session type to include custom properties
-interface ExtendedSession extends Session {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role: string; // Ensure role is included here
-  } & Session["user"];
-}
-
-export const authOptions: NextAuthOptions = {
+// Move authOptions to a separate constant but don't export it
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -117,23 +107,23 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
         // Add custom claims to the JWT token
-        token.role = (user as any).role;
+        token.role = (user as unknown as { role: string }).role;
         token.id = user.id;
       }
       return token;
     },
 
-    // async session({ session, token }): Promise<ExtendedSession> {
-    //   if (token && session.user) {
-    //     // Add custom claims to the session
-    //     session.user.role = token.role as string;
-    //     session.user.id = token.id as string;
-    //   }
-    //   return session as ExtendedSession;
-    // },
+    async session({ session, token }) {
+      if (token && session.user) {
+        // Add custom claims to the session
+        (session.user as any).role = token.role as string;
+        (session.user as any).id = token.id as string;
+      }
+      return session;
+    },
   },
 
   pages: {
@@ -165,13 +155,11 @@ export const authOptions: NextAuthOptions = {
     async signOut({ token }) {
       console.log("User signed out:", token.email);
     },
-    // async error(error) {
-    //   console.error("Auth error:", error);
-    // },
   },
 };
 
 // Create the handler
 const handler = NextAuth(authOptions);
 
+// Only export the HTTP method handlers
 export { handler as GET, handler as POST };

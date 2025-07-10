@@ -12,10 +12,10 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +101,7 @@ export default function SignInPage() {
         </CardContent>
         <CardFooter>
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?
             <Link
               href="/auth/registration"
               className="text-blue-600 hover:underline"

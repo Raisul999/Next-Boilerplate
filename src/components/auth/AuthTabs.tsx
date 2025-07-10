@@ -1,20 +1,8 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import SignInPage from "./SignInForm";
-import { Import } from "lucide-react";
+
 
 const AuthTabs = () => {
   return (

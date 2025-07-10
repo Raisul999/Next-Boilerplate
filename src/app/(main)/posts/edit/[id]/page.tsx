@@ -2,6 +2,7 @@
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import {
   Form,
   FormControl,
@@ -17,9 +18,9 @@ import { posts } from "@/data/posts";
 import { useToast } from "@/hooks/use-toast";
 
 interface PostsEditPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const formSchema = z.object({
@@ -33,23 +34,49 @@ const formSchema = z.object({
     message: "Author is required",
   }),
   date: z.string().min(1, {
-    message: "Date  is required",
+    message: "Date is required",
   }),
 });
 
 const PostEditPage = ({ params }: PostsEditPageProps) => {
   const { toast } = useToast();
-  const post = posts.find((post) => post.id === params.id);
+  const [post, setPost] = useState<unknown>(null);
+  const [loading, setLoading] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: post?.title ?? "",
-      body: post?.body ?? "",
-      author: post?.author ?? "",
-      date: post?.date ?? "",
+      title: "",
+      body: "",
+      author: "",
+      date: "",
     },
   });
+
+  useEffect(() => {
+    const loadPost = async () => {
+      try {
+        const resolvedParams = await params;
+        const foundPost = posts.find((post) => post.id === resolvedParams.id);
+        setPost(foundPost);
+
+        if (foundPost) {
+          form.reset({
+            title: foundPost.title ?? "",
+            body: foundPost.body ?? "",
+            author: foundPost.author ?? "",
+            date: foundPost.date ?? "",
+          });
+        }
+      } catch (error) {
+        console.error("Error loading post:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPost();
+  }, [params, form]);
 
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
     console.log({ data });
@@ -59,7 +86,14 @@ const PostEditPage = ({ params }: PostsEditPageProps) => {
     });
   };
 
-  // console.log({ post });
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!post) {
+    return <div>Post not found</div>;
+  }
+
   return (
     <>
       <h3 className="text-2xl mb-4">Edit Post</h3>
